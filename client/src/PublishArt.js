@@ -14,8 +14,8 @@ import {useCreateTokenAndSellArt} from "./hooks/DigitalArtHooks";
 /**
  * @App Build Decentralized Art Market using ERC-721
  * @Util Publish artwork
- * @Book Learn Ethereum 
- * @author brian wu
+ * @CreditTo  https://github.com/PacktPublishing/Learn-Ethereum 
+ * @author christopher chavez
  */
     const PublishArt = (props) =>{
         const {response: createTokenAndSellArtResponse, createTokenAndSellArt } = useCreateTokenAndSellArt();

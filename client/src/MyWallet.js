@@ -9,8 +9,8 @@ import Web3Context  from "./Web3Context";
 /**
  * @App Build Decentralized Art Market using ERC-721
  * @Util my digial art wallet
- * @Book Learn Ethereum 
- * @author brian wu
+ * @CreditTo  https://github.com/PacktPublishing/Learn-Ethereum 
+ * @author christopher chavez
  */
 const  MyWallet = (props)=>{
   const web3Context = useContext(Web3Context);

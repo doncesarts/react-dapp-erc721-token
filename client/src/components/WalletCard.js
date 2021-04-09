@@ -13,8 +13,8 @@ import {   Grid,
 /**
  * @App Build Decentralized Art Market using ERC-721
  * @Util aution house for digial art
- * @Book Learn Ethereum
- * @author brian wu
+ * @CreditTo  https://github.com/PacktPublishing/Learn-Ethereum
+ * @author christopher chavez
  */
 const WalledCard = (props) => {
         // const classes = useStyles();

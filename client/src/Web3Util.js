@@ -32,7 +32,7 @@ export const getWeb3 = () =>
 /**
  * @App Build Decentralized Art Market using ERC-721
  * @Util get contract instance by name 
- * @author Christopher Chavez
+ * @author christopher chavez
  */
 export const getContractInstance = async (web3, contractName) => {
     const networkId = await web3.eth.net.getId();

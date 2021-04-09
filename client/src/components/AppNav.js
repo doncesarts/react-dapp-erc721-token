@@ -9,8 +9,8 @@ import Link from "@material-ui/core/Link";
 /**
  * @App Build Decentralized Art Market using ERC-721
  * @Util header navigation
- * @Book Learn Ethereum
- * @author brian wu
+ * @CreditTo  https://github.com/PacktPublishing/Learn-Ethereum
+ * @author christopher chavez
  */
 const AppNav = props => {
   const [state, setState] = useState({
