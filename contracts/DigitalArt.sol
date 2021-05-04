@@ -1,9 +1,10 @@
+// "SPDX-License-Identifier: UNLICENSED" 
 /**
- * @notice smart contract for The DigitalArt ERC721 Token
- * @ Learn Ethereum
- * @author brian wu
+ * The DigitalArt ERC721 Token
+ * @notice smart contract based on  - Learn Ethereum by author brian wu
+ * @author cchavez
  */ 
-pragma solidity ^0.5.2;
+pragma solidity ^0.8.4;
 import "./ERC721.sol";
 
 contract DigitalArt is ERC721 {
@@ -37,13 +38,13 @@ contract DigitalArt is ERC721 {
        uint txnDate;
        uint status;
     }
-  //d
    event LogArtSold(uint _tokenId, string _title, string _authorName, uint256 _price, address _author,  address _current_owner, address _buyer);
    event LogArtTokenCreate(uint _tokenId, string _title, string _category, string _authorName, uint256 _price, address _author,  address _current_owner);
    event LogArtResell(uint _tokenId, uint _status, uint256 _price); 
-   constructor (string memory name, string memory symbol) public {
-        _name = name;
-        _symbol = symbol;
+
+   constructor (string memory __name, string memory __symbol) {
+        _name = __name;
+        _symbol = __symbol;
     }
     function name() external view returns (string memory) {
         return _name;
@@ -58,6 +59,7 @@ contract DigitalArt is ERC721 {
         require(bytes(_description).length > 0, 'The description cannot be empty');
         require(_price > 0, 'The price cannot be empty');
         require(bytes(_image).length > 0, 'The image cannot be empty');
+        address payable  _sender = payable(msg.sender);
         Art memory _art = Art({
             id: index,
             title: _title,
@@ -65,12 +67,14 @@ contract DigitalArt is ERC721 {
             price: _price,
             date: _date,
             authorName: _authorName,
-            author: msg.sender,
-            owner: msg.sender,
+            author: _sender,
+            owner: _sender,
             status: 1,
             image: _image
         });
-        uint256 tokenId = arts.push(_art) - 1;
+        // uint256 tokenId = (arts.push(_art)) - 1;
+        arts.push(_art);
+        uint256 tokenId = arts.length - 1;
         _mint(msg.sender, tokenId); 
         emit LogArtTokenCreate(tokenId,_title,  _date, _authorName,_price, msg.sender, msg.sender);
         index++;
@@ -88,17 +92,17 @@ contract DigitalArt is ERC721 {
         //transfer ownership of art
         _transfer(_current_owner, msg.sender, _tokenId);
         //return extra payment
-        if(msg.value > _price) msg.sender.transfer(msg.value - _price);
+        if(msg.value > _price) payable(msg.sender).transfer(msg.value - _price);
         //make a payment
         _current_owner.transfer(_price);
-        arts[_tokenId].owner = msg.sender;
+        arts[_tokenId].owner = payable(msg.sender);
         arts[_tokenId].status = 0;
         ArtTxn memory _artTxn = ArtTxn({
             id: _id,
             price: _price,
             seller: _current_owner,
             buyer: msg.sender,
-            txnDate: now,
+            txnDate: block.timestamp,
             status: _status
         });
         artTxns[_id].push(_artTxn);
@@ -215,19 +219,19 @@ contract DigitalArt is ERC721 {
         return owner != address(0);
     }
 
-   function balanceOf(address _owner) public view returns (uint256) {
+   function balanceOf(address _owner) override public view returns (uint256) {
         return _ownedTokensCount[_owner];
     }
-    function ownerOf(uint256 _tokenId) public view returns (address _owner) {
+    function ownerOf(uint256 _tokenId) override public view returns (address _owner) {
         _owner = _tokenOwner[_tokenId];
     }
-    function approve(address _to, uint256 _tokenId) public {
+    function approve(address _to, uint256 _tokenId) override public {
         require(isOwnerOf(_tokenId, msg.sender));
         _tokenApprovals[_tokenId] = _to;
         emit Approval(msg.sender, _to, _tokenId);
     }
 
-    function transferFrom(address _from, address _to, uint256 _tokenId) public {
+    function transferFrom(address _from, address _to, uint256 _tokenId) override public {
         require(_to != address(0));
         require(isOwnerOf(_tokenId, _from));
         require(isApproved(_to, _tokenId));
@@ -240,23 +244,23 @@ contract DigitalArt is ERC721 {
         _transfer(msg.sender, _to, _tokenId);
     }
     
-    function getApproved(uint256 tokenId) public view returns (address operator) {
+    function getApproved(uint256 tokenId) override public view returns (address operator) {
         require(_exists(tokenId));
         return _tokenApprovals[tokenId];
     }
 
-    function setApprovalForAll(address operator, bool _approved) public {
+    function setApprovalForAll(address operator, bool _approved) override public {
         require(operator != msg.sender);
         _operatorApprovals[msg.sender][operator] = _approved;
         emit ApprovalForAll(msg.sender, operator, _approved);
     }
-    function isApprovedForAll(address owner, address operator) public view returns (bool) {
+    function isApprovedForAll(address owner, address operator)  override public view returns (bool) {
         return _operatorApprovals[owner][operator];
     }
-    function safeTransferFrom(address from, address to, uint256 tokenId) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId) override public {
         // NOT IMPLEMENTED
     }
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) override public {
         // NOT IMPLEMENTED
     }
     
