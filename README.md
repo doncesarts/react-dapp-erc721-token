@@ -18,7 +18,9 @@ You need to configure a Web3 wallet in order to use it.
 This project is based on the project DigitalArtERC721Token at  https://github.com/PacktPublishing/Learn-Ethereum.
 
 The react client has been completely refactored in order to improve it maintenance and keep up to date with latest version of dependencies. 
-Log of changes
+
+### Log of changes
 - Introduced of @material-ui design system
 - Refactor all React Class Components to Functional Components   
 - Introduction of custom hooks to abstract calls to Smart Contracts and Web3
+- Migrate solidity source code to  ^0.8.4;
